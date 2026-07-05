@@ -6,16 +6,38 @@ body {
   color: #333;
 }
 
-/* LOGO */
-.logo {
-  text-align: center;
-  margin-top: 20px;
+/* TOP BAR */
+.topbar {
+  position: sticky;
+  top: 0;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
 
-.logo img {
-  width: 120px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.top-btn {
+  background: #25D366;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 /* HERO */
@@ -26,7 +48,7 @@ body {
 }
 
 .hero h1 {
-  font-size: 38px;
+  font-size: 34px;
   color: #1f4d2e;
 }
 
@@ -68,13 +90,21 @@ body {
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* FOOTER */
-.footer {
-  text-align: center;
+/* HIGHLIGHT BOX */
+.highlight {
+  background: linear-gradient(135deg, #e8f5e9, #ffffff);
+  border: 2px solid #25D366;
+  border-radius: 12px;
   padding: 20px;
-  background: #1f4d2e;
-  color: white;
-  margin-top: 40px;
+}
+
+/* REVIEWS */
+.review {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 /* FLOAT BUTTON */
@@ -92,11 +122,19 @@ body {
   z-index: 999;
 }
 
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #1f4d2e;
+  color: white;
+  margin-top: 40px;
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
-
   .hero h1 {
-    font-size: 26px;
+    font-size: 24px;
   }
 
   .hero p {
