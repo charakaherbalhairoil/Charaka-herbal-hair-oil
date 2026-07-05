@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Charaka Herbal Hair Oil</title>
 
   <link rel="stylesheet" href="style.css">
@@ -13,7 +13,7 @@
 
 <!-- WHATSAPP FLOAT -->
 <a class="whatsapp-float" href="https://wa.me/94715733633" target="_blank">
-  💬 Order Now
+  💬 Order
 </a>
 
 <!-- HERO SLIDER -->
@@ -28,7 +28,6 @@
   <div class="hero-content">
     <h1>Charaka Herbal Hair Oil</h1>
     <p>Natural Growth • Strong Roots • No Chemicals</p>
-    <a href="#order" class="btn primary">Place Order</a>
   </div>
 
 </header>
@@ -40,27 +39,46 @@
   <div class="feature-box">✨ Natural Shine</div>
 </section>
 
-<!-- PRODUCT -->
+<!-- PRODUCTS -->
 <section class="product-section">
-  <h2>Our Product</h2>
+
+  <h2>Our Products</h2>
 
   <div class="product-card">
-    <img src="images/product1.jpg" alt="product">
     <h3>Herbal Hair Oil</h3>
-    <p class="price">Rs. 1500</p>
+    <p>Rs. 1500</p>
+    <button onclick="addCart('Herbal Hair Oil',1500)">Add to Cart</button>
   </div>
+
+  <div class="product-card">
+    <h3>Hair Growth Oil</h3>
+    <p>Rs. 2000</p>
+    <button onclick="addCart('Hair Growth Oil',2000)">Add to Cart</button>
+  </div>
+
 </section>
 
-<!-- ORDER FORM -->
-<section id="order" class="order-section">
+<!-- CART -->
+<section class="cart-section">
 
-  <h2>Place Your Order</h2>
+  <h2>🛒 Cart</h2>
+
+  <div id="cart"></div>
+
+  <button class="checkout-btn" onclick="checkout()">Checkout via WhatsApp</button>
+
+</section>
+
+<!-- ORDER FORM (Firebase) -->
+<section class="order-section">
+
+  <h2>Quick Order</h2>
 
   <form id="orderForm">
 
-    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="text" id="name" placeholder="Name" required>
     <input type="text" id="address" placeholder="Address" required>
-    <input type="tel" id="phone" placeholder="Phone Number" required>
+    <input type="tel" id="phone" placeholder="Phone" required>
 
     <select id="payment">
       <option value="COD">Cash on Delivery</option>
@@ -71,8 +89,6 @@
 
   </form>
 
-  <p class="note">We will confirm your order via WhatsApp</p>
-
 </section>
 
 <!-- FOOTER -->
@@ -80,75 +96,116 @@
   <p>© 2026 Charaka Herbal Hair Oil</p>
 </footer>
 
-<!-- FIREBASE v9 (FIXED) -->
+<!-- FIREBASE -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // 🔥 YOUR FIREBASE CONFIG (replace this)
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID"
-  };
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  // SLIDER
-  let slides = document.querySelectorAll(".slide");
-  let index = 0;
+window.db = db;
+window.addDoc = addDoc;
+window.collection = collection;
+</script>
 
-  setInterval(() => {
-    slides.forEach(s => s.classList.remove("active"));
-    slides[index].classList.add("active");
+<!-- MAIN SCRIPT -->
+<script>
 
-    index++;
-    if(index >= slides.length){
-      index = 0;
-    }
-  }, 3000);
+let slides = document.querySelectorAll(".slide");
+let index = 0;
 
-  // ORDER FORM
-  document.getElementById("orderForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+setInterval(() => {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[index].classList.add("active");
 
-    let name = document.getElementById("name").value;
-    let address = document.getElementById("address").value;
-    let phone = document.getElementById("phone").value;
-    let payment = document.getElementById("payment").value;
+  index++;
+  if(index >= slides.length){
+    index = 0;
+  }
+}, 3000);
 
-    try {
-      await addDoc(collection(db, "orders"), {
-        name,
-        address,
-        phone,
-        payment,
-        time: new Date()
-      });
 
-      alert("Order placed successfully!");
+// CART SYSTEM
+let cart = [];
 
-      // WhatsApp backup
-      let msg =
-`New Order 🛒
-Name: ${name}
-Phone: ${phone}
-Address: ${address}
-Payment: ${payment}`;
+function addCart(name, price){
+  cart.push({name,price});
+  renderCart();
+}
 
-      window.open(
-        "https://wa.me/94715733633?text=" + encodeURIComponent(msg),
-        "_blank"
-      );
+function renderCart(){
+  let html = "";
+  let total = 0;
 
-      document.getElementById("orderForm").reset();
-
-    } catch (err) {
-      console.log(err);
-      alert("Order failed. Check Firebase config.");
-    }
+  cart.forEach((item)=>{
+    total += item.price;
+    html += `<p>${item.name} - Rs.${item.price}</p>`;
   });
+
+  html += `<h3>Total: Rs.${total}</h3>`;
+  document.getElementById("cart").innerHTML = html;
+}
+
+function checkout(){
+
+  if(cart.length === 0){
+    alert("Cart is empty!");
+    return;
+  }
+
+  let msg = "🛒 Order List\n";
+
+  cart.forEach(i=>{
+    msg += `${i.name} - Rs.${i.price}\n`;
+  });
+
+  window.open(
+    "https://wa.me/94715733633?text=" + encodeURIComponent(msg),
+    "_blank"
+  );
+}
+
+
+// FIREBASE ORDER FORM
+document.getElementById("orderForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+
+  let name = document.getElementById("name").value;
+  let address = document.getElementById("address").value;
+  let phone = document.getElementById("phone").value;
+  let payment = document.getElementById("payment").value;
+
+  try {
+
+    await addDoc(collection(db,"orders"),{
+      name,
+      address,
+      phone,
+      payment,
+      time: new Date()
+    });
+
+    alert("Order Placed Successfully!");
+    document.getElementById("orderForm").reset();
+
+    window.open(
+      "https://wa.me/94715733633?text=" +
+      encodeURIComponent(`New Order\nName:${name}\nPhone:${phone}`),
+      "_blank"
+    );
+
+  } catch(err){
+    console.log(err);
+    alert("Error placing order!");
+  }
+});
 
 </script>
 
