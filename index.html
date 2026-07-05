@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Charaka Herbal Hair Oil</title>
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
 <!-- WHATSAPP FLOAT -->
-<a class="whatsapp-float" href="https://wa.me/94715733633" target="_blank">💬 Order</a>
+<a class="whatsapp-float" href="https://wa.me/94715733633" target="_blank">
+  💬 Order
+</a>
 
 <!-- HERO SLIDER -->
 <header class="hero">
@@ -43,16 +45,16 @@
   <h2>Our Product</h2>
 
   <div class="product-card">
-    <img src="images/product1.jpg">
+    <img src="images/product1.jpg" alt="product">
     <h3>Herbal Hair Oil</h3>
     <p class="price">Rs. 1500</p>
   </div>
 </section>
 
-<!-- ORDER / PAYMENT SYSTEM -->
+<!-- ORDER FORM -->
 <section id="order" class="order-section">
 
-  <h2>Order Now</h2>
+  <h2>Place Your Order</h2>
 
   <form id="orderForm">
 
@@ -69,7 +71,7 @@
 
   </form>
 
-  <p class="note">We will confirm your order on WhatsApp</p>
+  <p class="note">We will confirm your order via WhatsApp</p>
 
 </section>
 
@@ -78,7 +80,70 @@
   <p>© 2026 Charaka Herbal Hair Oil</p>
 </footer>
 
-<script src="script.js"></script>
+<!-- FIREBASE (REAL DATABASE) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+
+<script>
+  // 🔥 Firebase Config (ඔයාගේ එක දාන්න)
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
+<!-- SCRIPT -->
+<script>
+  // SLIDER
+  let slides = document.querySelectorAll(".slide");
+  let index = 0;
+
+  setInterval(() => {
+    slides.forEach(s => s.classList.remove("active"));
+    slides[index].classList.add("active");
+
+    index++;
+    if(index >= slides.length){
+      index = 0;
+    }
+  }, 3000);
+
+  // ORDER SUBMIT
+  document.getElementById("orderForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let address = document.getElementById("address").value;
+    let phone = document.getElementById("phone").value;
+    let payment = document.getElementById("payment").value;
+
+    // SAVE TO FIREBASE
+    db.collection("orders").add({
+      name: name,
+      address: address,
+      phone: phone,
+      payment: payment,
+      time: new Date()
+    });
+
+    // WHATSAPP BACKUP
+    let msg =
+`New Order 🛒
+Name: ${name}
+Phone: ${phone}
+Address: ${address}
+Payment: ${payment}`;
+
+    window.open("https://wa.me/94715733633?text=" + encodeURIComponent(msg), "_blank");
+
+    alert("Order placed successfully!");
+    document.getElementById("orderForm").reset();
+  });
+</script>
 
 </body>
 </html>
