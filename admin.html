@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+</head>
+<body>
+
+<h2>Orders Dashboard</h2>
+<div id="orders"></div>
+
+<script type="module">
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  projectId: "YOUR_PROJECT"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadOrders(){
+  const querySnapshot = await getDocs(collection(db, "orders"));
+
+  let html = "";
+  querySnapshot.forEach(doc => {
+    let o = doc.data();
+
+    html += `
+      <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <b>${o.name}</b><br>
+        ${o.phone}<br>
+        ${o.address}<br>
+        ${o.payment}
+      </div>
+    `;
+  });
+
+  document.getElementById("orders").innerHTML = html;
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>
