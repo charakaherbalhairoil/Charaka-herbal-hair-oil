@@ -3,6 +3,7 @@
   padding:0;
   box-sizing:border-box;
   font-family:'Poppins', sans-serif;
+  scroll-behavior:smooth;
 }
 
 /* HERO */
@@ -21,7 +22,7 @@
   position:absolute;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.55);
+  background:rgba(0,0,0,0.6);
 }
 
 .hero-content{
@@ -30,8 +31,8 @@
 }
 
 .hero h1{
-  font-size:48px;
-  font-weight:700;
+  font-size:52px;
+  animation:fadeIn 1.5s ease;
 }
 
 .hero p{
@@ -40,16 +41,13 @@
   opacity:0.9;
 }
 
-.hero-buttons{
-  margin-top:25px;
-}
-
+/* BUTTON */
 .btn{
   padding:12px 25px;
-  text-decoration:none;
   border-radius:30px;
-  margin:5px;
+  text-decoration:none;
   display:inline-block;
+  margin-top:20px;
   font-weight:600;
 }
 
@@ -58,50 +56,59 @@
   color:white;
 }
 
-.outline{
-  border:2px solid white;
-  color:white;
-}
-
-/* SECTION */
-.section{
-  padding:60px 20px;
-  text-align:center;
-}
-
-.section h2{
-  font-size:32px;
-  margin-bottom:10px;
-}
-
 /* FEATURES */
 .features{
   display:flex;
   justify-content:center;
   gap:20px;
-  padding:30px;
+  padding:40px;
   flex-wrap:wrap;
 }
 
 .feature-box{
-  background:#f4f4f4;
+  background:#f5f5f5;
   padding:20px;
   border-radius:12px;
   font-weight:600;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* SECTION */
+.section{
+  text-align:center;
+  padding:60px 20px;
+}
+
+/* BEFORE AFTER */
+.before-after{
+  text-align:center;
+  padding:50px;
+}
+
+.ba-container{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.ba-container img{
+  width:200px;
+  border-radius:10px;
 }
 
 /* PRODUCT */
 .product-section{
-  padding:60px 20px;
   text-align:center;
+  padding:60px;
 }
 
 .product-card{
   width:280px;
-  margin:20px auto;
+  margin:auto;
   padding:20px;
   border-radius:15px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
 
 .product-card img{
@@ -111,23 +118,58 @@
 
 .price{
   font-size:20px;
-  margin:10px 0;
   font-weight:700;
+  margin:10px 0;
 }
 
 .buy-btn{
-  display:inline-block;
-  padding:10px 20px;
   background:black;
   color:white;
-  border-radius:20px;
+  padding:10px 20px;
+  border-radius:25px;
   text-decoration:none;
+}
+
+/* TESTIMONIAL */
+.testimonials{
+  background:#f8f8f8;
+  padding:50px;
+  text-align:center;
+}
+
+.review{
+  margin:10px;
+  font-style:italic;
 }
 
 /* FOOTER */
 footer{
-  padding:20px;
   text-align:center;
+  padding:20px;
   background:#111;
   color:white;
+}
+
+/* WHATSAPP FLOAT */
+.whatsapp-float{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#25D366;
+  color:white;
+  padding:12px 18px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.fade-in{
+  animation:fadeIn 1s ease;
 }
