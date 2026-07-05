@@ -5,42 +5,40 @@
 </head>
 <body>
 
-<h2>Orders Dashboard</h2>
+<h2>Orders</h2>
 <div id="orders"></div>
 
-<script type="module">
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
 
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  projectId: "YOUR_PROJECT"
-};
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID"
+  };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-async function loadOrders(){
-  const querySnapshot = await getDocs(collection(db, "orders"));
+  db.collection("orders").onSnapshot(snapshot => {
+    let html = "";
 
-  let html = "";
-  querySnapshot.forEach(doc => {
-    let o = doc.data();
+    snapshot.forEach(doc => {
+      let o = doc.data();
 
-    html += `
-      <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-        <b>${o.name}</b><br>
-        ${o.phone}<br>
-        ${o.address}<br>
-        ${o.payment}
-      </div>
-    `;
+      html += `
+        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+          <b>${o.name}</b><br>
+          ${o.phone}<br>
+          ${o.address}<br>
+          ${o.payment}
+        </div>
+      `;
+    });
+
+    document.getElementById("orders").innerHTML = html;
   });
-
-  document.getElementById("orders").innerHTML = html;
-}
-
-loadOrders();
 </script>
 
 </body>
