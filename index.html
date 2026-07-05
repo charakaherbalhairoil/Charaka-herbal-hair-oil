@@ -13,7 +13,7 @@
 
 <!-- WHATSAPP FLOAT -->
 <a class="whatsapp-float" href="https://wa.me/94715733633" target="_blank">
-  💬 Order
+  💬 Order Now
 </a>
 
 <!-- HERO SLIDER -->
@@ -28,7 +28,7 @@
   <div class="hero-content">
     <h1>Charaka Herbal Hair Oil</h1>
     <p>Natural Growth • Strong Roots • No Chemicals</p>
-    <a href="#order" class="btn primary">Order Now</a>
+    <a href="#order" class="btn primary">Place Order</a>
   </div>
 
 </header>
@@ -80,24 +80,21 @@
   <p>© 2026 Charaka Herbal Hair Oil</p>
 </footer>
 
-<!-- FIREBASE (REAL DATABASE) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<!-- FIREBASE v9 (FIXED) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<script>
-  // 🔥 Firebase Config (ඔයාගේ එක දාන්න)
+  // 🔥 YOUR FIREBASE CONFIG (replace this)
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
+    projectId: "YOUR_PROJECT_ID"
   };
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-<!-- SCRIPT -->
-<script>
   // SLIDER
   let slides = document.querySelectorAll(".slide");
   let index = 0;
@@ -112,8 +109,8 @@
     }
   }, 3000);
 
-  // ORDER SUBMIT
-  document.getElementById("orderForm").addEventListener("submit", function(e){
+  // ORDER FORM
+  document.getElementById("orderForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     let name = document.getElementById("name").value;
@@ -121,28 +118,38 @@
     let phone = document.getElementById("phone").value;
     let payment = document.getElementById("payment").value;
 
-    // SAVE TO FIREBASE
-    db.collection("orders").add({
-      name: name,
-      address: address,
-      phone: phone,
-      payment: payment,
-      time: new Date()
-    });
+    try {
+      await addDoc(collection(db, "orders"), {
+        name,
+        address,
+        phone,
+        payment,
+        time: new Date()
+      });
 
-    // WHATSAPP BACKUP
-    let msg =
+      alert("Order placed successfully!");
+
+      // WhatsApp backup
+      let msg =
 `New Order 🛒
 Name: ${name}
 Phone: ${phone}
 Address: ${address}
 Payment: ${payment}`;
 
-    window.open("https://wa.me/94715733633?text=" + encodeURIComponent(msg), "_blank");
+      window.open(
+        "https://wa.me/94715733633?text=" + encodeURIComponent(msg),
+        "_blank"
+      );
 
-    alert("Order placed successfully!");
-    document.getElementById("orderForm").reset();
+      document.getElementById("orderForm").reset();
+
+    } catch (err) {
+      console.log(err);
+      alert("Order failed. Check Firebase config.");
+    }
   });
+
 </script>
 
 </body>
