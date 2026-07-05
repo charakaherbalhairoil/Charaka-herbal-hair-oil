@@ -1,4 +1,4 @@
-/* BASIC RESET */
+/* RESET */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -9,19 +9,17 @@ body {
 /* HERO */
 .hero {
   text-align: center;
-  padding: 60px 20px;
+  padding: 70px 20px;
   background: linear-gradient(135deg, #e8f5e9, #ffffff);
 }
 
 .hero h1 {
   font-size: 40px;
   color: #1f4d2e;
-  margin-bottom: 10px;
 }
 
 .hero p {
   font-size: 18px;
-  margin-bottom: 20px;
 }
 
 /* BUTTON */
@@ -33,7 +31,7 @@ body {
   border-radius: 10px;
   text-decoration: none;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 /* CONTAINER */
@@ -41,10 +39,10 @@ body {
   width: 90%;
   max-width: 1000px;
   margin: auto;
-  padding: 20px 0;
+  padding: 25px 0;
 }
 
-/* PRODUCT IMAGES */
+/* PRODUCT */
 .product {
   display: flex;
   gap: 15px;
@@ -67,7 +65,22 @@ body {
   margin-top: 40px;
 }
 
-/* 📱 MOBILE FIX */
+/* FLOAT BUTTON */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  padding: 15px 18px;
+  border-radius: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
 
   .hero h1 {
@@ -85,5 +98,6 @@ body {
   .btn {
     width: 90%;
     display: block;
+    text-align: center;
   }
 }
