@@ -1,44 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Panel</title>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:Poppins;
+  margin:0;
+  background:#f4f6f8;
+}
+
+.header{
+  background:#111;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+.container{
+  padding:20px;
+}
+
+.card{
+  background:white;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.badge{
+  background:#27ae60;
+  color:white;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+</style>
 </head>
+
 <body>
 
-<h2>Orders</h2>
-<div id="orders"></div>
+<div class="header">
+  <h2>📊 Admin Dashboard</h2>
+</div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<div class="container" id="orders"></div>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID"
-  };
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
+};
 
-  db.collection("orders").onSnapshot(snapshot => {
-    let html = "";
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    snapshot.forEach(doc => {
-      let o = doc.data();
+onSnapshot(collection(db,"orders"), (snapshot)=>{
 
-      html += `
-        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-          <b>${o.name}</b><br>
-          ${o.phone}<br>
-          ${o.address}<br>
-          ${o.payment}
-        </div>
-      `;
-    });
+  let html = "";
 
-    document.getElementById("orders").innerHTML = html;
+  snapshot.forEach(doc=>{
+    let o = doc.data();
+
+    html += `
+      <div class="card">
+        <h3>${o.name} <span class="badge">${o.payment}</span></h3>
+        <p>📞 ${o.phone}</p>
+        <p>📍 ${o.address}</p>
+      </div>
+    `;
   });
+
+  document.getElementById("orders").innerHTML = html;
+});
 </script>
 
 </body>
